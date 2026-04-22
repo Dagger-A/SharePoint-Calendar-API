@@ -1,2 +1,8 @@
 # SharePoint-Calendar-API
-A server written in Node.js that listens for form submissions and posts submission data to a SharePoint Calendar
+This is a sample project containing a server written in Node.js that listens for form submissions and posts submission data to a SharePoint Calendar. The API works in conjunction with a form website which sends requests to the server (not included in the repository).
+
+# Overview
+The process begins when a user submits a form containing data about events, which includes the name, times and locations of the events (The url of the form webpage has been hidden for security reasons). Once the submit button is clicked, the form performs data validation on the inputs. If successful, the form sends a POST request containing the event data and the form ID to the url of the server running the API. The server recieves the request, then gets a token from Microsoft Graph. With the token, it then gets the form digest value, a SharePoint-specific value that prevents cross-site request forgery. After obtaining both a token and the form digest value, the server iterates over every event and sends a POST request to the endpoint of the SharePoint list that feeds into the calendar. If the entire proccess completes without any exceptions, the server responds to the form page with a status of 200, which causes the submission to be accepted.
+
+# Error Handling/Debugging
+If any exception is thrown during the proccess, the server responds with a status of 500 to the form page, which cancels the submission. The server logs a message to the console each time it receives a request (including the request body and form ID), evey time a function runs, and every time an error is thrown. If the server is deployed with PM2, all logs are automatically dumped to a .txt file with a timestamp for each entry.
